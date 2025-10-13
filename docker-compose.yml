@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  # Service Nginx
+  nginx:
+    image: nginx:1.20-alpine
+    container_name: myapp_nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./src:/var/www/html
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php
+      - db
+    networks:
+      - app-network
+
+  # Service PHP-FPM
+  php:
+    image: php:7.4-fpm-alpine
+    container_name: myapp_php
+    volumes:
+      - ./src:/var/www/html
+    networks:
+      - app-network
+
+  # Service MySQL
+  db:
+    image: mysql:5.7
+    container_name: myapp_db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: your_database
+      MYSQL_USER: your_user
+      MYSQL_PASSWORD: your_password
+      MYSQL_ROOT_PASSWORD: your_root_password
+    volumes:
+      - db-data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - app-network
+
+# Réseau Docker
+networks:
+  app-network:
+    driver: bridge
+
+# Volume pour la persistance des données MySQL
+volumes:
+  db-data:
+    driver: local
