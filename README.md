@@ -29,7 +29,7 @@
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/NiMP.git
+git clone https://github.com/N0x41/NiMP.git
 cd NiMP
 ```
 
