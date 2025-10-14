@@ -6,3 +6,5 @@
 !/var/www/index.html
 !/var/www/50x.html
 NiMP/docker/*
+.env
+!.env.example
