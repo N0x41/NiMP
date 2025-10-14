@@ -4,7 +4,7 @@ name = "NiMP"
 dynamic = ["version"]
 description = "Python wrapper for NiMP, container based web development environment."
 authors = [
-    { name = "Nox", email = "nox@pm.me" }
+    { name = "Nox @ N0x41", email = "41N0x@proton.me" }
 ]
 license = { file = "LICENSE.md" }
 readme = { file = "README.md", content-type = "text/markdown" }
