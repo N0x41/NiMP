@@ -1,9 +1,9 @@
 # NiMP - Version agnostic dockerized environment
 
-[![Version](https://img.shields.io/badge/version-0.8.5-blue.svg)](https://github.com/your-username/NiMP)
+[![Version](https://img.shields.io/badge/version-0.9.1-blue.svg)](https://github.com/N0x41/NiMP)
 [![Python](https://img.shields.io/badge/python-3.9+-green.svg)](https://python.org)
 [![Docker](https://img.shields.io/badge/docker-ready-blue.svg)](https://docker.com)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE.md)
+[![License](https://img.shields.io/badge/license-BSD3-green.svg)](LICENSE.md)
 
 **NiMP** is a comprehensive Python wrapper for managing a containerized web development environment using Nginx, MySQL, and PHP (with phpMyAdmin). It provides an easy-to-use CLI interface for managing Docker containers and simplifies the setup of a complete LEMP stack.
 
