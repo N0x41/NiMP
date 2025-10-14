@@ -1,4 +1,4 @@
-# NiMP - Version agnostic dockerized web development environment
+# NiMP - Version agnostic dockerized environment
 
 [![Version](https://img.shields.io/badge/version-0.8.5-blue.svg)](https://github.com/your-username/NiMP)
 [![Python](https://img.shields.io/badge/python-3.9+-green.svg)](https://python.org)
