@@ -1,6 +1,6 @@
 # NiMP - Version agnostic dockerized environment
 
-[![Version](https://img.shields.io/badge/version-0.9.1-blue.svg)](https://github.com/N0x41/NiMP)
+[![Version](https://img.shields.io/badge/version-0.9.5-blue.svg)](https://github.com/N0x41/NiMP)
 [![Python](https://img.shields.io/badge/python-3.9+-green.svg)](https://python.org)
 [![Docker](https://img.shields.io/badge/docker-ready-blue.svg)](https://docker.com)
 [![License](https://img.shields.io/badge/license-BSD3-green.svg)](LICENSE.md)

@@ -35,7 +35,7 @@ class Constants:
     """
     Application constants and version information.
     """
-    version: str = "0.8.5"  # Current version of NiMP
+    version: str = "0.9.5"  # Current version of NiMP
 ```
 
 #### NiMP.utils.commands.run_command
@@ -239,22 +239,32 @@ http {
 
 ```nginx
 server {
-    listen 80;
-    listen [::]:80;
+    listen       80;
+    listen  [::]:80;
     index index.php index.html;
     server_name localhost;
-    error_log /var/log/nginx/error.log;
+    error_log  /var/log/nginx/error.log;
     access_log /var/log/nginx/access.log;
     root /var/www/html;
 
-    location ~ \.php$ {
-        try_files $uri =404;
-        fastcgi_split_path_info ^(.+\.php)(/.+)$;
-        fastcgi_pass php:9000;
-        fastcgi_index index.php;
-        include fastcgi_params;
-        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-        fastcgi_param PATH_INFO $fastcgi_path_info;
+    location / {
+        try_files $uri $uri/ @rewriteapp;
+
+        # PHP processing, make sure to use your own upstream name if different
+        location ~ \.php(/|$) {
+            include fastcgi.conf;
+            fastcgi_split_path_info ^(.+\.php)(/.*)$;
+            fastcgi_param PATH_INFO $fastcgi_path_info;
+            fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+            fastcgi_param DOCUMENT_ROOT $realpath_root;
+            try_files $uri $uri/ /app.php$is_args$args;
+            fastcgi_pass php:9000;
+            fastcgi_intercept_errors on;    
+        }
+    }
+
+    location @rewriteapp {
+        rewrite ^(.*)$ /app.php/$1 last;
     }
 
     error_page 500 502 503 504 /50x.html;
@@ -907,7 +917,3 @@ run_command(["docker-compose", "up", "-d"], env)
 - Update DOC.md for API changes
 - Add examples for new features
 - Keep troubleshooting guide current
-
----
-
-This documentation provides comprehensive coverage of the NiMP project, including API references, configuration details, and troubleshooting guidance. For additional support, please refer to the project's issue tracker or community forums.
