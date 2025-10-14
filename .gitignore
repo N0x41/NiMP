@@ -1,0 +1,8 @@
+*.pyc
+**/__pycache__
+/var/mysql/*
+!/var/mysql
+/var/www/*
+!/var/www/index.html
+!/var/www/50x.html
+NiMP/docker/*
