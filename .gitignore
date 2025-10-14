@@ -4,6 +4,7 @@
 !/var/mysql
 /var/www/*
 !/var/www/index.html
+!/var/www/index.php
 !/var/www/50x.html
 NiMP/docker/*
 .env
