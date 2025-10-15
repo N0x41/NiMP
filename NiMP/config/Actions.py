@@ -1,9 +1,12 @@
+from operator import truediv
 import os
 import sys
 import subprocess
+import pathlib
 
 from NiMP.config.DefaultEnv import default_env
 from NiMP.utils.commands import run_command
+from NiMP.utils.fs import delete
 from dotenv import dotenv_values
 
 def usage():
@@ -29,31 +32,32 @@ def usage():
     print("  restore         📤 Restaure les fichiers de config depuis 'backup.tar.gz'.")
     print("----------------------------------------------------")
 
-def action_start(command_args: list[str], env = dict[str, str]):  # pyright: ignore[reportUnusedParameter]
+def action_start(command_args = list[str], env = dict[str, str]):  # pyright: ignore[reportUnusedParameter]
     print("🚀 Démarrage des conteneurs...")
-    run_command(["docker-compose", "up", "-d"], env)
+    delete("var", "mysql", "mysql.sock");
+    run_command(["docker-compose", "up", "-d"], env)      
     web_port = env.get('WEB_PORT', '8080') # Utilise 8080 si WEB_PORT n'est pas défini
     ssl_port = env.get('SSL_PORT', '8443') # Utilise 8443 si SSL_PORT n'est pas défini
     print(f"✅ Environnement démarré sur:\n\t- http://localhost:{web_port}\n\t- https://localhost:{ssl_port}")
     return 0;
 
-def action_stop(command_args: list[str], env = dict[str, str] | None):
+def action_stop(command_args = list[str], env = dict[str, str] | None):
     print("🛑 Arrêt des conteneurs...")
     run_command(["docker-compose", "down"], env=env)
     return 0;
 
-def action_restart(command_args: list[str], env = dict[str, str] | None):
+def action_restart(command_args = list[str], env = dict[str, str] | None):
     print("🔄 Redémarrage des conteneurs...")
-    action_stop()
-    action_start(env)
+    action_stop(env=env)
+    action_start(env=env)
     return 0;
 
-def action_build(command_args: list[str], env = dict[str, str] | None):
+def action_build(command_args = list[str], env = dict[str, str] | None):
     print("🛠️  Reconstruction des images...")
     run_command(["docker-compose", "build", "--no-cache"], env)
     return 0;
 
-def action_logs(command_args: list[str], env = dict[str, str] | None):
+def action_logs(command_args = list[str], env = dict[str, str] | None):
     print("📜 Affichage des logs en direct (Ctrl+C pour quitter)...")
     # On passe directement la main à docker-compose, pas besoin de 'run_command'
     try:
@@ -62,14 +66,14 @@ def action_logs(command_args: list[str], env = dict[str, str] | None):
         print("\nArrêt de l'affichage des logs.")
     return 0;
 
-def action_shell(command_args: list[str], env = dict[str, str] | None):
+def action_shell(command_args = list[str], env = dict[str, str] | None):
     service = command_args[0] if command_args else "php"
     print(f"💻 Connexion au shell du conteneur '{service}'...")
     # os.execvp remplace le processus Python par le shell, pour une meilleure interactivité
     os.execvpe("docker-compose", ["docker-compose", "exec", service, "sh"], env)
     return 0;
 
-def action_composer(command_args: list[str], env = dict[str, str] | None):
+def action_composer(command_args = list[str], env = dict[str, str] | None):
     if not command_args:
         print("❌ Erreur: Veuillez spécifier une commande Composer.")
         print("Exemple: ./manage.py composer install")
@@ -78,7 +82,7 @@ def action_composer(command_args: list[str], env = dict[str, str] | None):
     run_command(["docker-compose", "exec", "php", "composer"] + command_args, env)
     return 0;
 
-def action_clean(command_args: list[str], env = dict[str, str] | None):
+def action_clean(command_args = list[str], env = dict[str, str] | None):
     confirm = input("🤔 Êtes-vous sûr de vouloir tout supprimer (conteneurs ET données) ? [o/N] ")
     if confirm.lower() == 'o':
         print("🧹 Nettoyage complet de l'environnement...")
@@ -88,7 +92,7 @@ def action_clean(command_args: list[str], env = dict[str, str] | None):
         print("Opération annulée.")
     return 0;
 
-def action_backup(command_args: list[str], env = dict[str, str] | None):
+def action_backup(command_args = list[str], env = dict[str, str] | None):
     print("📥 Sauvegarde des fichiers de configuration...")
     files_to_backup = ['.env', 'etc/', 'www/'] # Adaptez cette liste à vos besoins
     existing_files = [f for f in files_to_backup if os.path.exists(f)]
@@ -99,7 +103,7 @@ def action_backup(command_args: list[str], env = dict[str, str] | None):
     print("✅ Sauvegarde créée dans 'backup.tar.gz'.")
     return 0;
 
-def action_restore(command_args: list[str], env = dict[str, str] | None):
+def action_restore(command_args = list[str], env = dict[str, str] | None):
     if not os.path.exists('backup.tar.gz'):
         print("❌ Le fichier 'backup.tar.gz' n'existe pas.")
         sys.exit(1)
@@ -108,7 +112,7 @@ def action_restore(command_args: list[str], env = dict[str, str] | None):
     print("✅ Fichiers restaurés depuis l'archive.")
     return 0;
 
-def action_usage(command_args: list[str], env = dict[str, str] | None):
+def action_usage(command_args = list[str], env = dict[str, str] | None):
     usage()
     return 1;
 

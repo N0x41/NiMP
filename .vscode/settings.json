@@ -1,0 +1,11 @@
+{
+    "files.exclude": {
+        "**/.git": true,         // this is a default value
+        "**/.DS_Store": true,    // this is a default value
+        "**/__pycache__": true,
+        // alternative version
+        "node_modules": true    // this excludes the folder 
+                                // only from the root of
+                                // your workspace 
+    }
+}

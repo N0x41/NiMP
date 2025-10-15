@@ -39,7 +39,7 @@ def main() -> int:
     # Récupère la commande et les arguments
     args = sys.argv[1:]
     if not args:
-        sys.exit(action_usage())
+        args = ['']
 
     command = args[0]
     command_args = args[1:]

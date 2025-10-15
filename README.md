@@ -255,7 +255,7 @@ sudo chown -R $USER:$USER var/
 
 ## 📝 TODO
 
-- [ ] Fix MySQL socket deletion issue
+- [x] Fix MySQL socket deletion issue
 - [ ] Add PHP extension installation automation
 - [ ] Create configuration bootstrapper
 - [ ] Add SSL certificate management
